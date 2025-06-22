@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio | Siam</title>
+  <style>
+    /* General styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background-size: 200% 200%;
+      animation: gradientMotion 10s ease infinite;
+      color: #fff;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientMotion {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animated-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .circle, .pulse, .square {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(0, 255, 204, 0.08);
+      animation: float 12s infinite ease-in-out;
+    }
+
+    .circle:nth-child(1) { width: 180px; height: 180px; top: 10%; left: 10%; animation-delay: 0s; }
+    .circle:nth-child(2) { width: 100px; height: 100px; top: 50%; left: 75%; animation-delay: 3s; }
+    .circle:nth-child(3) { width: 220px; height: 220px; top: 80%; left: 5%; animation-delay: 6s; }
+    .pulse {
+      background: rgba(0, 255, 204, 0.12);
+      width: 80px;
+      height: 80px;
+      animation: pulse 6s ease-in-out infinite;
+    }
+    .square {
+      border-radius: 0%;
+      background: rgba(0, 255, 204, 0.05);
+      width: 100px;
+      height: 100px;
+      animation: rotate 12s linear infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-30px); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.3); opacity: 0.1; }
+      100% { transform: scale(1); opacity: 0.4; }
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* --- Nav Styles --- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    nav h1 {
+      font-size: 24px;
+      color: #00ffcc;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-left: 20px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #00ffcc;
+    }
+
+    nav .menu-icon {
+      display: none; /* Hidden by default, shown on mobile */
+      cursor: pointer;
+      font-size: 30px;
+      color: #00ffcc;
+    }
+
+    /* --- Hero Section Styles --- */
+    .hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: left; /* Keep left aligned for larger screens */
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content {
+      display: flex;
+      align-items: center;
+      gap: 60px; /* Adjusted gap as per your HTML's inline style */
+      max-width: 1000px;
+      width: 100%;
+      flex-wrap: wrap; /* Allow items to wrap to the next line */
+      justify-content: center; /* Center items when they wrap */
+    }
+
+    .hero img {
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 6px solid #00ffcc;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.25);
+      flex-shrink: 0; /* Prevent image from shrinking too much */
+    }
+
+    /* Wrapper for text to control its width */
+    .hero-text-wrapper {
+      gap: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* Align text to the start (left) */
+    }
+
+    .hero-text h2 {
+      font-size: 32px;
+      color: #00ffcc;
+      margin-bottom: 10px;
+    }
+
+    .hero-text h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .typing-text {
+      white-space: nowrap; /* Keep text on a single line */
+      overflow: hidden;    /* Hide overflowing text */
+      border-right: 2px solid #00ffcc; /* Blinking cursor */
+      animation: typing 3s steps(30, end), blink 0.75s step-end infinite;
+      display: inline-block; /* Essential for animation to work with span */
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    /* --- Other Sections General Styles (unchanged) --- */
+    section {
+      padding: 80px 20px;
+      max-width: 1000px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .project {
+      background: #1c1c1c;
+      padding: 20px;
+      border-radius: 10px;
+      width: 280px;
+      box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .project:hover {
+      transform: translateY(-8px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      background: #121212;
+      color: #888;
+    }
+    .animated-services {
+      animation: fadeUp 1.2s ease-out both;
+    }
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Responsive Design Media Queries --- */
+
+    /* Tablet and Smaller Devices (max-width: 768px) */
+    @media (max-width: 768px) {
+      /* Nav Responsive */
+      nav {
+        padding: 10px 20px;
+      }
+
+      nav ul {
+        display: none; /* Hide navigation links by default for smaller screens */
+        flex-direction: column;
+        position: absolute;
+        top: 60px; /* Adjust based on nav height */
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        padding: 10px 0;
+        text-align: center;
+      }
+
+      nav ul.show { /* Class to show navigation when toggled */
+        display: flex;
+      }
+
+      nav .menu-icon {
+        display: block; /* Show hamburger icon */
+      }
+
+      nav ul li {
+        margin: 10px 0;
+      }
+
+      /* Hero Section Responsive */
+      .hero-content {
+        flex-direction: column; /* Stack image and text vertically */
+        text-align: center; /* Center content horizontally */
+        gap: 30px; /* Reduce gap for smaller screens */
+      }
+
+      .hero img {
+        width: 250px; /* Smaller image on tablets */
+        height: 250px;
+        margin-bottom: 15px; /* Add some space below the image */
+      }
+
+      .hero-text-wrapper {
+        align-items: center; /* Center text within its wrapper */
+      }
+
+      .hero-text h1 {
+        font-size: 36px; /* Smaller font size for h1 */
+        text-align: center; /* Ensure heading is centered */
+        margin-bottom: 15px; /* Adjust margin if needed */
+      }
+
+      .typing-text {
+        white-space: normal; /* Allow text to wrap on smaller screens */
+        animation: none;      /* Disable typing animation on smaller screens */
+        border-right: none;   /* Remove border-right for typing effect */
+        width: auto;          /* Remove width constraint */
+      }
+
+      /* Other Sections Responsive */
+      section {
+        padding: 60px 15px;
+      }
+
+      #about h2 {
+        font-size: 40px;
+        text-align: center;
+      }
+
+      #about p {
+        margin-left: 0;
+        text-align: center; /* Center the about text */
+      }
+
+      #video-frame iframe {
+        width: 100%;
+        height: 250px; /* Adjust video height for smaller screens */
+      }
+
+      #services > div > div { /* Target the service boxes within #services */
+        width: 100%; /* Make service boxes take full width */
+      }
+
+      #events img {
+        width: 100%; /* Make event images take full width */
+        height: auto; /* Maintain aspect ratio */
+      }
+
+      .project {
+        width: 100%; /* Make project boxes take full width */
+      }
+
+      #contact {
+        text-align: center;
+      }
+
+      #contact > div { /* Target the social icons div within #contact */
+        justify-content: center; /* Center social icons */
+      }
+    }
+
+    /* Mobile Devices (max-width: 480px) */
+    @media (max-width: 480px) {
+      nav {
+        padding: 10px 15px;
+      }
+
+      nav h1 {
+        font-size: 20px;
+      }
+
+      .hero-text h1 {
+        font-size: 28px;
+      }
+
+      .hero-text h2 {
+        font-size: 24px;
+      }
+
+      section {
+        padding: 40px 10px;
+      }
+
+      #about h2 {
+        font-size: 32px;
+      }
+
+      #video-frame iframe {
+        height: 200px;
+      }
+
+      footer {
+        padding: 20px 0;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="animated-shapes">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="pulse" style="top: 30%; left: 50%;"></div>
+    <div class="pulse" style="top: 70%; left: 80%;"></div>
+    <div class="square" style="top: 20%; left: 60%;"></div>
+  </div>
+
+   <nav>
+    <h1>Siam</h1>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <ul id="navLinks">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header id="hero" class="hero">
+      <div class="hero-content">
+          <img src="./b430124c-1da3-492d-a675-1a6d4afe4ba9.jpg" alt="Siam Photo">
+          <div class="hero-text-wrapper">
+              <h2>Hello, I'm</h2>
+              <h1><span class="typing-text">Siam | Social Media Manager</span></h1>
+              <a href="./Curriculum Vitae siam.pdf.pdf" download style="display:inline-block;margin-top:15px;padding:10px 20px;background:#00ffcc;color:#000;text-decoration:none;border-radius:5px;font-weight:bold;box-shadow:0 0 10px rgba(0,255,204,0.4);">Download CV</a>
+          </div>
+      </div>
+  </header>
+
+  <section id="about">
+    <h2 style="font-size: 50px; color: rgb(63, 230, 230); margin-bottom: 20px;">About Me</h2>
+    <p style="margin-left: 10px; text-align: justify; line-height: 1.6; color: #ddd; max-width: 800px;">
+      I'm Md Shams Al Siam, a dynamic and passionate Social Media Manager and Student Operations Executive based in Moghbazar, Dhaka.
+      With a proven track record in managing social media platforms—especially Facebook—I specialize in content creation, audience engagement,
+      and communication strategies that drive results.
+      <br><br>
+      Currently working at Skill Sphere, I oversee everything from social media content and student onboarding to mentoring in web development
+      tools like HTML, CSS, and WordPress. My previous role at Creativity Olympiad helped me develop key strengths in event coordination and communication.
+      With over 100+ certifications in leadership, design, and technology, I combine creativity with strategy to build strong online presence
+      and community interaction. I love working with students, solving problems, and using analytics to make data-driven decisions.
+      Whether it’s launching a social media campaign or helping a student learn web development, I strive to deliver impact with creativity,
+      clarity, and care.
+    </p>
+
+    <button onclick="document.getElementById('video-frame').style.display='block'"
+            style="margin: 20px 10px; padding: 10px 20px; font-size: 16px; background-color: #00ffc3; border: none; border-radius: 6px; cursor: pointer; color: #000;">
+      ▶ Watch My Video
+    </button>
+
+    <div id="video-frame" style="display: none; margin-left: 10px; margin-top: 20px;">
+      <iframe width="560" height="315"
+              src="https://www.youtube.com/embed/WylqLGwFbAI?autoplay=1"
+              title="YouTube video player" frameborder="0"
+              allow="autoplay; encrypted-media" allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <section id="services" class="animated-services">
+    <h2 style="margin-bottom: 30px; color: #00ffcc; font-size: 32px; text-align: center;">My Services</h2>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+      <div style="background: #1c1c1c; padding: 20px; border-radius: 10px; width: 280px; box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);">Content Creation (Graphics, Captions, Reels)</div>
+      <div style="background: #1c1c1c; padding: 20px; border-radius: 10px; width: 280px; box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);">Page Setup & Optimization</div>
+      <div style="background: #1c1c1c; padding: 20px; border-radius: 10px; width: 280px; box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);">Ai Expart </div>
+      <div style="background: #1c1c1c; padding: 20px; border-radius: 10px; width: 280px; box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);">Facebook/Instagram Ads Management</div>
+      <div style="background: #1c1c1c; padding: 20px; border-radius: 10px; width: 280px; box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);">Content Planning & Scheduling</div>
+      <div style="background: #1c1c1c; padding: 20px; border-radius: 10px; width: 280px; box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);">YouTube Channel Mentoring</div>
+      <div style="background: #1c1c1c; padding: 20px; border-radius: 10px; width: 280px; box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);">Canva Designing</div>
+      <div style="background: #1c1c1c; padding: 20px; border-radius: 10px; width: 280px; box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);">Website Moderation</div>
+      <div style="background: #1c1c1c; padding: 20px; border-radius: 10px; width: 280px; box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);">Student Operations Executive</div>
+      <div style="background: #1c1c1c; padding: 20px; border-radius: 10px; width: 280px; box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);">Student Coordinator</div>
+    </div>
+  </section>
+
+  <section id="events">
+    <h2 style="margin-bottom: 30px; color: #00ffcc; font-size: 32px; text-align: center;">Event Moments</h2>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; animation: fadeUp 1.5s ease-out;">
+      <img src="./472551088_1335451957587118_5739014989886979342_n.jpg" alt="Event 1" style="border-radius: 10px; width: 300px; height: 200px; object-fit: cover; box-shadow: 0 0 10px rgba(0,255,204,0.2); animation: float 4s ease-in-out infinite;">
+      <img src="./472796650_1336006620864985_4460090359592341409_n.jpg" alt="Event 2" style="border-radius: 10px; width: 300px; height: 200px; object-fit: cover; box-shadow: 0 0 10px rgba(0,255,204,0.2); animation: float 5s ease-in-out infinite;">
+      <img src="./475996549_1356615952137385_520891831581753386_n.jpg" alt="Event 3" style="border-radius: 10px; width: 300px; height: 200px; object-fit: cover; box-shadow: 0 0 10px rgba(0,255,204,0.2); animation: float 6s ease-in-out infinite;">
+      <img src="./483749340_630092893104162_4388515368929476831_n.jpg" alt="Event 1" style="border-radius: 10px; width: 300px; height: 200px; object-fit: cover; box-shadow: 0 0 10px rgba(0,255,204,0.2); animation: float 4s ease-in-out infinite;">
+      <img src="./505997724_1445983349867311_4802151289538085466_n.jpg" alt="Event 2" style="border-radius: 10px; width: 300px; height: 200px; object-fit: cover; box-shadow: 0 0 10px rgba(0,255,204,0.2); animation: float 5s ease-in-out infinite;">
+      <img src="./06.jpg" alt="Event 3" style="border-radius: 10px; width: 300px; height: 200px; object-fit: cover; box-shadow: 0 0 10px rgba(0,255,204,0.2); animation: float 6s ease-in-out infinite;">
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2 style="margin-bottom: 30px;">Featured Projects</h2>
+    <div class="project-list">
+      <div class="project" style="display: flex; flex-direction: column; gap: 5px; ">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" width="24" style="filter: invert(1);">
+          <span >Facebook Page</span>
+        </div>
+        <div style="margin-top: 20px;">
+            <ul style="margin: 0; padding-left: 34px;">
+                <li>
+                    <a href="https://www.facebook.com/skillspherebd"
+                       target="_blank"
+                       style="color: rgb(63, 230, 230); text-decoration: none;">
+                      Skill Sphere
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.facebook.com/CreativeOlympiadBd"
+                       target="_blank"
+                       style="color: rgb(63, 230, 230); text-decoration: none;">
+                       Creative Olympiad BD
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.facebook.com/profile.php?id=61576550952543"
+                       target="_blank"
+                       style="color: rgb(63, 230, 230); text-decoration: none;">
+                       Collectorian-21
+                    </a>
+                  </li>
+            </ul>
+        </div>
+      </div>
+
+      <div class="project" style="display: flex; flex-direction: column; gap: 5px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" width="24" style="filter: invert(1);">
+            <span>YouTube Channel Growth</span>
+        </div>
+        <div style="margin-top: 20px;">
+            <ul style="margin: 0; padding-left: 34px;">
+                <li>
+                    <a href="https://www.youtube.com/@SkillSphereofficial"
+                       target="_blank"
+                       style="color: rgb(63, 230, 230); text-decoration: none;">
+                      Skill Sphere official
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.facebook.com/CreativeOlympiadBd"
+                       target="_blank"
+                       style="color: rgb(63, 230, 230); text-decoration: none;">
+                       Creative Olympiad BD
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.youtube.com/@somadhan5571/videos"
+                       target="_blank"
+                       style="color: rgb(63, 230, 230); text-decoration: none;">
+                       SomaDhaN
+                    </a>
+                  </li>
+            </ul>
+        </div>
+      </div>
+
+      <div class="project" style="display: flex; flex-direction: column; gap: 5px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span>Others</span>
+        </div>
+        <ul style="margin: 0; padding-left: 34px;">
+            <li>
+                <a
+                   target="_blank"
+                   style="color: rgb(63, 230, 230); text-decoration: none;">
+                   Website Moderation
+                   <ol>
+                    <a href="https://skillspherebd.com/" style="color: rgba(141, 250, 8, 0.717); text-decoration: none;"> skillspherebd </a>
+                   </ol>
+                   <ol>
+                    <a href="https://creativeolympiadbd.com/" style="color: rgba(141, 250, 8, 0.717); text-decoration: none;"> creativeolympiadbd</a>
+                   </ol>
+                </a>
+              </li>
+              <li>
+                <a
+                   target="_blank"
+                   style="color: rgb(63, 230, 230); text-decoration: none;">
+                   Student Operations Executive
+                </a>
+              </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="gap: 20px; ">
+    <h1 style="font-size: 40px; color: #00ffcc;">Get in Touch</h1>
+    <p>Email: mdshamsalsiam7@gmail.com</p>
+    <p>Phone: +8801797654164</p>
+    <div style="display: flex; gap: 15px; ">
+      <a href="https://www.facebook.com/mdshams.siam.9/" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" width="30"></a>
+      <a href="https://www.instagram.com/shamssiam123/" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="30"></a>
+      <a href="https://www.linkedin.com/in/md-shams-al-siam-847a79370/" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" width="30"></a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Siam | All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      var navLinks = document.getElementById("navLinks");
+      navLinks.classList.toggle("show");
+    }
+
+    // Close the mobile menu when a link is clicked
+    document.querySelectorAll('#navLinks a').forEach(item => {
+      item.addEventListener('click', () => {
+        var navLinks = document.getElementById("navLinks");
+        if (navLinks.classList.contains("show")) {
+          navLinks.classList.remove("show");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
